@@ -9,11 +9,11 @@ LDFLAGS:=
 .PHONY: all, clean
 .SECONDARY:
 
-all: 1.1 1.2 1.3
+all: 2.1 2.2
 	make -C ${rng_dir}
 
-1.%: obj/1.%.o ${rng_dir}/obj/random.o
-	${LD} ${LDFLAGS} obj/1.$*.o ${rng_dir}/obj/random.o -o $@
+2.%: obj/2.%.o ${rng_dir}/obj/random.o
+	${LD} ${LDFLAGS} obj/2.$*.o ${rng_dir}/obj/random.o -o $@
 
 obj/%.o: src/%.cpp ${rng_dir}/random.h
 	mkdir -p obj
@@ -21,4 +21,4 @@ obj/%.o: src/%.cpp ${rng_dir}/random.h
 
 clean:
 	rm -f obj/*
-	rm -f 1.1 1.2 1.3
+	rm -f 2.1 2.2
