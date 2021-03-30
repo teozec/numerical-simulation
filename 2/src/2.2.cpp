@@ -50,10 +50,10 @@ int main()
 				double dir = rnd.rannyu(-1., 1.);
 				r[axis] += dir >= 0. ? 1 : -1;
 			}
-			sum += sqrt(r[0]*r[0] + r[1]*r[1] + r[2]*r[2]);
+			sum += r[0]*r[0] + r[1]*r[1] + r[2]*r[2];
 		}
 		double ave = sum / N_walks_per_block;
-		out << ave << endl;
+		out << sqrt(ave) << endl;
 	}
 	out.close();
 
@@ -75,10 +75,10 @@ int main()
 				r[1] += sin(theta) * sin(phi);
 				r[2] += cos(theta);
 			}
-			sum += sqrt(r[0]*r[0] + r[1]*r[1] + r[2]*r[2]);
+			sum += r[0]*r[0] + r[1]*r[1] + r[2]*r[2];
 		}
 		double ave = sum / N_walks_per_block;
-		out << ave << endl;
+		out << sqrt(ave) << endl;
 	}
 	out.close();
 
