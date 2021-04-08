@@ -13,13 +13,10 @@ If you only wish to build the exercises for lesson 1, run:
 ```bash
 make 1
 ```
-or
-```bash
-make -C 1
 ```
 Finally, if you are only interested in exercise 2 of lesson 1, please run:
 ```bash
-make -C 1 1.2
+make 1.2
 ```
 
 
