@@ -14,34 +14,39 @@ _/    _/  _/_/_/  _/_/_/_/ email: Davide.Galli@unimi.it
 #include <string>
 #include "random.h"
 
-#define N_throws 10000
-
 using namespace std;
 
 int main()
 {
+	const int N_throws = 10000;
+	const int N_sums[4] = {1, 2, 10, 100};
+	const char end_c[4] = {'\t', '\t', '\t', '\n'};
+
+	// Construct new random number generator
 	Random rnd(SEED_DIR "/Primes", SEED_DIR "/seed.in");
 
+	// Write info about number of throws into info file
 	ofstream out("data/1.2-info.dat");
 	if (!out.is_open()) {
 		cerr << "Could not open data/1.2-info.dat\n";
 		return 1;
 	}
 	out << N_throws << endl;
+	for (int i = 0; i < 4; i++)
+		out << N_sums[i] << end_c[i];
 	out.close();
 
+	// Open data file for uniform distribution
 	out.open("data/1.2-unif.dat");
 	if (!out.is_open()) {
 		cerr << "Could not open data/1.2-unif.dat\n";
 		return 1;
 	}
 
-	const int N_sums[4] = {1, 2, 10, 100};
-	const char end_c[4] = {'\t', '\t', '\t', '\n'};
-
 	for (int i = 0; i < N_throws; i++) {
 		for (int j = 0; j < 4; j++) {
 			int s = 0;
+			// Sum N_sums[j] uniformly distributed integer numbers
 			for (int z = 0; z < N_sums[j]; z++)
 				s += (int) rnd.rannyu(1., 7.);
 			out << s/N_sums[j] << end_c[j];
@@ -57,6 +62,7 @@ int main()
 	for (int i = 0; i < N_throws; i++) {
 		for (int j = 0; j < 4; j++) {
 			double s = 0.;
+			// Sum N_sums[j] exponentially distributed numbers
 			for (int z = 0; z < N_sums[j]; z++)
 				s += rnd.exp(1.);
 			out << s/N_sums[j] << end_c[j];
@@ -72,6 +78,7 @@ int main()
 	for (int i = 0; i < N_throws; i++) {
 		for (int j = 0; j < 4; j++) {
 			double s = 0.;
+			// Sum N_sums[j] Cauchy distributed numbers
 			for (int z = 0; z < N_sums[j]; z++)
 				s += rnd.cauchy(0., 1.);
 			out << s/N_sums[j] << end_c[j];

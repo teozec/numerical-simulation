@@ -14,15 +14,15 @@ _/    _/  _/_/_/  _/_/_/_/ email: Davide.Galli@unimi.it
 #include <string>
 #include "random.h"
 
-#define N_blocks 100
-#define N_throws_per_block 10000
-#define d 1.0
-#define l 0.5
-
 using namespace std;
 
 int main()
 {
+	const int N_blocks = 100;
+	const int N_throws_per_block = 10000;
+	const double d = 1.0;	// The distance between lines
+	const double l = 0.5;	// The length of the needle
+
 	// Construct new random number generator
 	Random rnd(SEED_DIR "/Primes", SEED_DIR "/seed.in");
 
@@ -45,25 +45,33 @@ int main()
 		int n_hit = 0;
 
 		for (int j = 0; j < N_throws_per_block; j++) {
+			// Generate the x position of the first vertex of the needle
 			double x1 = rnd.rannyu(0., d);
-			double x, y;
 
+
+			// Sample a point from the quarter of circle r<=1, x>0, y>0
+			double x, y;
 			do {
 				x = rnd.rannyu();
 				y = rnd.rannyu();
 			} while (x*x + y*y > 1.);
 
-			double theta = y >= 0. ?
-				acos(x/sqrt(x*x+y*y)) : 2*M_PI - acos(x/sqrt(x*x+y*y));
+			// Use the sampled point (x,y) to sample an angle theta,
+			// 	uniformely distributed in the (0,pi/2) range
+			double theta = acos(x/sqrt(x*x+y*y));
 			double x2 = x1 + l*sin(theta);
 
-			if (x2 < 0 or x2 > d)
+			// If the needle crosses the line, increment the number of hits
+			if (x2 > d)
 				n_hit++;
 		}
 
+		// Estimate pi inverting the formula for the probabiilty
+		// 	that the needle intersects the line
 		double pi = 2*l*N_throws_per_block / (n_hit * d);
 		out << pi << endl;
 	}
+	out.close();
 
 	rnd.save_seed(SEED_DIR "/seed.out");
 	return 0;
