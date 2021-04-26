@@ -13,6 +13,7 @@ _/    _/  _/_/_/  _/_/_/_/ email: Davide.Galli@unimi.it
 #include <cmath>
 #include <cstdlib>
 #include <string>
+#include <cstring>
 #include "random.h"
 
 using namespace std;
@@ -125,6 +126,60 @@ double Random::accept_reject(double x1, double x2, double y_max, double (*p)(dou
 	} while (p(x) < y);
 	return x;
 }
+
+bool Random::metropolis(double xn[], double x[], int ndim, double (*p)(double x[], int ndim))
+{
+	bool accept = false;
+	double alpha = p(x, ndim) / p(xn, ndim);
+
+	// Accept x with probability alpha (otherwise keep old x)
+	if (alpha > 1. or rannyu() <= alpha) {
+		memcpy(xn, x, ndim * sizeof *x);
+		accept = true;
+	}
+	delete x;
+
+	return accept;
+}
+
+// Metropolis algorithm with uniform sampling
+// Input:
+// 	xn: array with points at step xn
+// 	ndim: number of dimensions (elements in xn)
+// 	step: side of the ndim-dimensional square to sample uniformly from, centered in xn
+// 	p: pointer to probability distribution
+// Output:
+// 	true, and xn contains the new point, if accept
+// 	false, and xn contains the old point, if reject
+bool Random::metropolis_unif(double xn[], int ndim, double step, double (*p)(double x[], int ndim))
+{
+	double *x = new double[ndim];
+
+	for (int i = 0; i < ndim; i++)
+		x[i] = rannyu(xn[i] - step, xn[i] + step);
+
+	return metropolis(xn, x, ndim, p);
+}
+//
+// Metropolis algorithm with uniform sampling
+// Input:
+// 	xn: array with points at step xn
+// 	ndim: number of dimensions (elements in xn)
+// 	sigma: sigma of the ndim-dimensional gaussian to sample from, centered in xn
+// 	p: pointer to probability distribution
+// Output:
+// 	true, and xn contains the new point, if accept
+// 	false, and xn contains the old point, if reject
+bool Random::metropolis_gauss(double xn[], int ndim, double sigma, double (*p)(double x[], int ndim))
+{
+	double *x = new double[ndim];
+
+	for (int i = 0; i < ndim; i++)
+		x[i] = gauss(xn[i], sigma);
+
+	return metropolis(xn, x, ndim, p);
+}
+
 /****************************************************************
 *****************************************************************
     _/    _/  _/_/_/  _/       Numerical Simulation Laboratory
