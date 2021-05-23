@@ -13,16 +13,16 @@ _/    _/  _/_/_/  _/_/_/_/ email: Davide.Galli@unimi.it
 #include <cmath>
 #include <cstdlib>
 #include <string>
+#include <functional>
 #include <cstring>
 #include "random.h"
 
 using namespace std;
 
-Random :: Random(){}
+//Random::Random(){}
 
-Random :: ~Random(){}
-
-Random::Random(string primes_file, string seed_file) {
+Random::Random(string primes_file, string seed_file)
+{
 	int seed[4];
 	int p1, p2;
 	ifstream primes(primes_file);
@@ -51,7 +51,8 @@ Random::Random(string primes_file, string seed_file) {
 	}
 }
 
-void Random::save_seed(string filename){
+void Random::save_seed(string filename)
+{
 	ofstream write_seed;
 	write_seed.open(filename);
 	if (write_seed.is_open()){
@@ -61,20 +62,23 @@ void Random::save_seed(string filename){
 	return;
 }
 
-double Random :: gauss(double mean, double sigma) {
-	double s=rannyu();
-	double t=rannyu();
-	double x=sqrt(-2.*log(1.-s))*cos(2.*M_PI*t);
+double Random::gauss(double mean, double sigma)
+{
+	double s = rannyu();
+	double t = rannyu();
+	double x = sqrt(-2. * log(1.-s)) * cos(2.*M_PI*t);
 	return mean + x * sigma;
 }
 
-double Random :: rannyu(double min, double max){
-	return min+(max-min)*rannyu();
+double Random::rannyu(double min, double max)
+{
+	return min + (max - min) * rannyu();
 }
 
-double Random :: rannyu(void){
-	const double twom12=0.000244140625;
-	int i1,i2,i3,i4;
+double Random :: rannyu(void)
+{
+	const double twom12 = 0.000244140625;
+	int i1, i2, i3, i4;
 	double r;
 
 	i1 = l1*m4 + l2*m3 + l3*m2 + l4*m1 + n1;
@@ -92,7 +96,8 @@ double Random :: rannyu(void){
 	return r;
 }
 
-void Random :: set_random(int * s, int p1, int p2){
+void Random::set_random(int *s, int p1, int p2)
+{
 	m1 = 502;
 	m2 = 1521;
 	m3 = 4071;
@@ -117,7 +122,7 @@ double Random::cauchy(double mean, double gamma) {
 	return mean + gamma * tan(M_PI * (rannyu() - 0.5));
 }
 
-double Random::accept_reject(double x1, double x2, double y_max, double (*p)(double x)) {
+double Random::accept_reject(double x1, double x2, double y_max, function<double(double)> p) {
 	double x;
 	double y;
 	do {
@@ -127,7 +132,7 @@ double Random::accept_reject(double x1, double x2, double y_max, double (*p)(dou
 	return x;
 }
 
-bool Random::metropolis(double xn[], double x[], int ndim, double (*p)(double x[], int ndim))
+bool Random::metropolis(double xn[], double x[], int ndim, function<double(double [], int)> p)
 {
 	bool accept = false;
 	double alpha = p(x, ndim) / p(xn, ndim);
@@ -147,11 +152,11 @@ bool Random::metropolis(double xn[], double x[], int ndim, double (*p)(double x[
 // 	xn: array with points at step xn
 // 	ndim: number of dimensions (elements in xn)
 // 	step: side of the ndim-dimensional square to sample uniformly from, centered in xn
-// 	p: pointer to probability distribution
+// 	p: probability distribution
 // Output:
 // 	true, and xn contains the new point, if accept
 // 	false, and xn contains the old point, if reject
-bool Random::metropolis_unif(double xn[], int ndim, double step, double (*p)(double x[], int ndim))
+bool Random::metropolis_unif(double xn[], int ndim, double step, function<double(double [], int)> p)
 {
 	double *x = new double[ndim];
 
@@ -166,11 +171,11 @@ bool Random::metropolis_unif(double xn[], int ndim, double step, double (*p)(dou
 // 	xn: array with points at step xn
 // 	ndim: number of dimensions (elements in xn)
 // 	sigma: sigma of the ndim-dimensional gaussian to sample from, centered in xn
-// 	p: pointer to probability distribution
+// 	p: probability distribution
 // Output:
 // 	true, and xn contains the new point, if accept
 // 	false, and xn contains the old point, if reject
-bool Random::metropolis_gauss(double xn[], int ndim, double sigma, double (*p)(double x[], int ndim))
+bool Random::metropolis_gauss(double xn[], int ndim, double sigma, function<double(double [], int)> p)
 {
 	double *x = new double[ndim];
 

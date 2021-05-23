@@ -12,21 +12,19 @@ _/    _/  _/_/_/  _/_/_/_/ email: Davide.Galli@unimi.it
 #define RANDOM_H
 
 #include <string>
+#include <functional>
 
 class Random {
 
 private:
 	int m1, m2, m3, m4, l1, l2, l3, l4, n1, n2, n3, n4;
-	bool metropolis(double xn[], double x[], int ndim, double (*p)(double x[], int ndim));
+	bool metropolis(double xn[], double x[], int ndim, std::function<double(double [], int)> p);
 
 protected:
 
 public:
 	// constructors
-	Random();
 	Random(std::string primes, std::string seed);
-	// destructor
-	~Random();
 	// methods
 	void set_random(int *, int, int);
 	void save_seed(std::string filename);
@@ -35,9 +33,10 @@ public:
 	double gauss(double mean, double sigma);
 	double exp(double lambda);
 	double cauchy(double mean, double gamma);
-	double accept_reject(double x1, double x2, double y_max, double (*p)(double x));
-	bool metropolis_unif(double xn[], int ndim, double step, double (*p)(double x[], int ndim));
-	bool metropolis_gauss(double xn[], int ndim, double sigma, double (*p)(double x[], int ndim));
+	double accept_reject(double x1, double x2, double y_max, std::function<double(double)> p);
+	bool metropolis_unif(double xn[], int ndim, double step, std::function<double(double [], int)> p);
+	bool metropolis_gauss(double xn[], int ndim, double sigma, std::function<double(double [], int)> p);
+
 };
 
 #endif // RANDOM_H

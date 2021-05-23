@@ -14,13 +14,13 @@ _/    _/  _/_/_/  _/_/_/_/ email: Davide.Galli@unimi.it
 #include <string>
 #include "random.h"
 
-#define N_blocks 100
-#define N_throws_per_block 10000
-
 using namespace std;
 
 int main()
 {
+	const int N_blocks = 100;
+	const int N_throws_per_block = 10000;
+
 	// Construct new random number generator
 	Random rnd(SEED_DIR "/Primes", SEED_DIR "/seed.in");
 
@@ -45,7 +45,6 @@ int main()
 		for (int j = 0; j < N_throws_per_block; j++) {
 			double x = rnd.rannyu(0., 1.);
 			double y = M_PI/2 * cos(M_PI/2 * x);
-			//cout << x << ' ' << y << endl;
 			sum += y;
 			sum_err += (y - 1.) * (y - 1.);
 		}
