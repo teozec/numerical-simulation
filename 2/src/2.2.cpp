@@ -41,14 +41,15 @@ int main()
 		return 1;
 	}
 
+	// Discrete random walk
 	for (int i = 0; i < N_blocks; i++) {
 		double sum = 0.;
 		for (int j = 0; j < N_walks_per_block; j++) {
 			int r[3] = { 0 };
 			for (int z = 0; z < N_steps_per_walk; z++) {
-				int axis = (int) rnd.rannyu(0., 3.);
-				double dir = rnd.rannyu(-1., 1.);
-				r[axis] += dir >= 0. ? 1 : -1;
+				int axis = (int) rnd.rannyu(0., 3.);	// Sample x, y or z axix
+				double dir = rnd.rannyu(-1., 1.);	// Sample positive or negative direction
+				r[axis] += dir >= 0. ? 1 : -1;		// Step
 			}
 			sum += r[0]*r[0] + r[1]*r[1] + r[2]*r[2];
 		}
@@ -64,11 +65,13 @@ int main()
 		return 1;
 	}
 
+	// Continuous random walk
 	for (int i = 0; i < N_blocks; i++) {
 		double sum = 0.;
 		for (int j = 0; j < N_walks_per_block; j++) {
 			double r[3] = { 0 };
 			for (int z = 0; z < N_steps_per_walk; z++) {
+				// Sample direction
 				double phi = rnd.rannyu(0, 2*M_PI);
 				double theta = acos(1 - 2*rnd.rannyu());
 				r[0] += sin(theta) * cos(phi);

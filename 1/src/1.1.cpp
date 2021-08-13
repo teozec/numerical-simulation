@@ -27,10 +27,10 @@ int main()
 	// Write info about number of blocks and throws into info file
 	ofstream out("data/1.1-info.dat");
 	if (!out.is_open()) {
-		cerr << "Could not open data/1.1-info.dat\n";
+		cerr << "Could not open data/1.1-info.dat" << endl;
 		return 1;
 	}
-	out << N_blocks << '\n' << N_throws_per_block << endl;
+	out << N_blocks << endl << N_throws_per_block << endl;
 	out.close();
 
 	// Open data file

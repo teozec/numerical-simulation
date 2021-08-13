@@ -40,11 +40,12 @@ int main()
 		return 1;
 	}
 
+	// Compute integral sampling from uniform distribution
 	for (int i = 0; i < N_blocks; i++) {
 		double sum = 0., sum_err = 0.;
 		for (int j = 0; j < N_throws_per_block; j++) {
-			double x = rnd.rannyu(0., 1.);
-			double y = M_PI/2 * cos(M_PI/2 * x);
+			double x = rnd.rannyu(0., 1.);		// p(x) = 1
+			double y = M_PI/2 * cos(M_PI/2 * x);	// g(x) = f(x)
 			sum += y;
 			sum_err += (y - 1.) * (y - 1.);
 		}
@@ -60,12 +61,13 @@ int main()
 		return 1;
 	}
 
+	// Compute integral sampling from p(x) = 2*(1-x) (Taylor expansion of f(x) in x=1)
 	for (int i = 0; i < N_blocks; i++) {
 		double sum = 0., sum_err = 0.;
 		for (int j = 0; j < N_throws_per_block; j++) {
-			double x = rnd.rannyu();
-			x = 1 - sqrt(1-x);
-			double y = M_PI/2 * cos(M_PI/2 * x) / (2 * (1-x));
+			double x = rnd.rannyu();				// p(x) = 2 * (1 - x)
+			x = 1 - sqrt(1-x);					// Inverse cumulative: x(y) = 1 - sqrt(1 - y), with p(y) = 1
+			double y = M_PI/2 * cos(M_PI/2 * x) / (2 * (1-x));	// g(x) = f(x) / p(x)
 			sum += y;
 			sum_err += (y - 1.) * (y - 1.);
 		}
@@ -74,31 +76,6 @@ int main()
 		out << ave << '\t' << ave_err << endl;
 	}
 	out.close();
-
-//	out.open("data/2.1.c.dat");
-//	if (!out.is_open()) {
-//		cerr << "Could not open 2.1.dat\n";
-//		return 1;
-//	}
-
-//	for (int i = 0; i < N_blocks; i++) {
-//		double sum = 0., sum_err = 0., ave, ave_err;
-//		for (int j = 0; j < N_throws_per_block; j++) {
-//			double x;
-//			double y;
-//			do {
-//				x = rnd.rannyu();
-//				y = rnd.rannyu(0., 80.8948);
-//			} while (384.-48.*M_PI*M_PI*x*x+5*M_PI*M_PI*M_PI*M_PI*x*x*x*x < y);
-//			y = M_PI/2 * cos(x*M_PI/2) * (1920-80*M_PI*M_PI+M_PI*M_PI*M_PI*M_PI) / 5.;
-//			y /= (384-48*M_PI*M_PI*x*x+M_PI*M_PI*M_PI*M_PI*x*x*x*x);
-//			sum += y;
-//			sum_err += (y - 1.) * (y - 1.);
-//		}
-//		ave = sum / N_throws_per_block;
-//		ave_err = sum_err / N_throws_per_block;
-//	}
-//	out.close();
 
 	rnd.save_seed(SEED_DIR "/seed.out");
 	return 0;
