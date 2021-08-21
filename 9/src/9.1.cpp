@@ -10,17 +10,17 @@ using namespace std;
 double cost_accumulate(vector<Individual> individuals, int n_individuals)
 {
 	return accumulate(individuals.begin(), individuals.begin() + n_individuals, individuals[0].cost(),
-		[](const double x, const Individual &y) { return x + y.cost();}) / n_individuals;
+		[](const double x, const Individual &y) { return x + y.cost(); }) / n_individuals;
 }
 
 void TSP(Random rnd, const int n_cities, const int n_individuals, const int n_generations,
-	vector<City> city, string s)
+	vector<City> city, string s, double pm, double pc, double p)
 {
 	vector<Individual> individuals;
 	for (int i = 0; i < n_individuals; i++)
 		individuals.push_back(Individual{city, rnd});
 
-	Population population{individuals, rnd};
+	Population population{individuals, rnd, pm, pc, p};
 	ofstream out{"data/9.1-" + s + "-out.dat"};
 	if (!out.is_open()) {
 		cerr << "Could not open data/9.1-" + s + "-out.dat" << endl;
@@ -60,7 +60,7 @@ int main()
 		circ.push_back(City{cos(theta), sin(theta), i});
 		out_cities << i << '\t' << cos(theta) << '\t' << sin(theta) << endl;
 	}
-	TSP(rnd, n_cities, n_individuals, n_generations, circ, "circ");
+	TSP(rnd, n_cities, n_individuals, n_generations, circ, "circ", 0.15, 0.7, 2.);
 
 	vector<City> square;
 	out_cities.close();
@@ -75,7 +75,7 @@ int main()
 		square.push_back(City{x, y, i});
 		out_cities << i << '\t' << x << '\t' << y << endl;
 	}
-	TSP(rnd, n_cities, n_individuals, n_generations, square, "square");
+	TSP(rnd, n_cities, n_individuals, n_generations, square, "square", 0.1, 0.7, 2.);
 
 	return 0;
 }

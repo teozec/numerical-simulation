@@ -98,7 +98,20 @@ public:
 
 	void mutate(Individual &individual) {
 		if (rnd.rannyu() < pm)
-			std::swap(individual.cities[(size_t) rnd.rannyu(1, n_cities - 1)], individual.cities[(size_t) rnd.rannyu(1, n_cities - 1)]);
+			std::swap(individual.cities[(size_t) rnd.rannyu(1, n_cities)], individual.cities[(size_t) rnd.rannyu(1, n_cities)]);
+		if (rnd.rannyu() < pm) {
+			int r1 = (int) rnd.rannyu(1, n_cities);
+			int r2 = (int) rnd.rannyu(1, n_cities);
+			if (r2 > r1)
+				std::reverse(individual.cities.begin()+r1, individual.cities.begin()+r2);
+			else
+				std::reverse(individual.cities.begin()+r2, individual.cities.begin()+r1);
+		}
+		if (rnd.rannyu() < pm) {
+			std::vector<int> x{(int) rnd.rannyu(1, n_cities), (int) rnd.rannyu(1, n_cities), (int) rnd.rannyu(1, n_cities)};
+			std::sort(x.begin(), x.end());
+			std::rotate(individual.cities.begin()+x[0], individual.cities.begin()+x[1], individual.cities.begin()+x[2]);
+		}
 	}
 
 	void crossover(Individual parent1, Individual parent2, Individual &son1, Individual &son2) {
