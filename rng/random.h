@@ -34,6 +34,20 @@ public:
 	double exp(double lambda);
 	double cauchy(double mean, double gamma);
 	double accept_reject(double x1, double x2, double y_max, std::function<double(double)> p);
+
+	template <class T> bool metropolis(T &xn, T &x, std::function<double(T&)> p) {
+		bool accept = false;
+		double alpha = p(x) / p(xn);
+
+		// Accept x with probability alpha (otherwise keep old x)
+		if (alpha > 1. or rannyu() <= alpha) {
+			xn = x;
+			accept = true;
+		}
+
+		return accept;
+	}
+
 	bool metropolis_unif(double xn[], int ndim, double step, std::function<double(double [], int)> p);
 	bool metropolis_gauss(double xn[], int ndim, double sigma, std::function<double(double [], int)> p);
 
