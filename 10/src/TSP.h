@@ -7,6 +7,7 @@ struct City {
 	double x, y;
 	int label;
 
+	City() {}
 	City(double x, double y, int label): x{x}, y{y}, label{label} {}
 
 	double distance(const City &other) const {
@@ -73,6 +74,10 @@ private:
 public:
 	Population(std::vector<Individual> individuals, Random &rnd, double pm = 0.1, double pc = 0.5, double p = 3.):
 		individuals{individuals}, n_individuals{individuals.size()}, n_cities{individuals[0].cities.size()}, rnd{rnd}, pm{pm}, pc{pc}, p{p} {
+		sort();
+	}
+
+	void sort() {
 		std::sort(individuals.begin(), individuals.end());
 	}
 
@@ -92,8 +97,8 @@ public:
 			new_generation_vec[i] = son1;
 			new_generation_vec[i+1] = son2;
 		}
-		std::sort(new_generation_vec.begin(), new_generation_vec.end());
 		individuals = new_generation_vec;
+		sort();
 	}
 
 	void mutate(Individual &individual) {
