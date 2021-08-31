@@ -44,6 +44,7 @@ void TSP(Random rnd, const int n_cities, const int n_individuals, const int n_st
 		vector<City> send{population.individuals[0].cities};
 		vector<City> recv{send.size()};
 		size_t size = send.size() * sizeof(decltype(send)::value_type);
+
 		// The process with lower rank does send-recv, the one with higher rank does recv-send.
 		if (rank == 0) {
 			MPI_Sendrecv(send.data(), size, MPI_BYTE, cont, 0, recv.data(), size, MPI_BYTE, cont, MPI_ANY_TAG, MPI_COMM_WORLD, NULL);

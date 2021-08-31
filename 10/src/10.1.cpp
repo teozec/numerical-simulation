@@ -9,7 +9,7 @@ using namespace std;
 double boltzmann(Individual &individual, double beta)
 {
 	double l = individual.cost() ;
-	return exp(-beta * l); // ? - sign
+	return exp(-beta * l);
 }
 
 void TSP(Random rnd, const int n_cities, const int n_generations, vector<City> city,
