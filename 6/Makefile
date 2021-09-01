@@ -3,7 +3,7 @@ seed_dir:=../seed
 
 CPP:=g++
 LD:=g++
-CPPFLAGS:=-Wall -Wextra -pedantic -I ${rng_dir} -D 'SEED_DIR="${seed_dir}"'
+CPPFLAGS:=-Wall -Wextra -pedantic --std=c++11 -O3 -I ${rng_dir} -D 'SEED_DIR="${seed_dir}"'
 LDFLAGS:=
 
 .PHONY: all, clean
