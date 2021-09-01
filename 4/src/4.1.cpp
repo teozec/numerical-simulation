@@ -45,6 +45,9 @@ int main(int argc, char *argv[])
 	}
 
 	MolDyn sim = MolDyn("config/4.1-input.dat", "config/4.1-config.0", old);	//Inizialization
+	if (string(argv[1]) == "start")
+		sim.info();
+
 	if (equilibrate)
 		sim.rescale();
 

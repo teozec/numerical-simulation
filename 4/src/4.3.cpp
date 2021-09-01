@@ -7,6 +7,10 @@
 _/    _/  _/_/_/  _/_/_/_/ email: Davide.Galli@unimi.it
 *****************************************************************
 *****************************************************************/
+
+// Exercise 4.3
+// Molecular dynamics simulation with block mean and different phases.
+
 #include <cstdlib>	// srand, rand: to generate random number
 #include <iostream>	// cin, cout: Standard Input/Output Streams Library
 #include <fstream>	// Stream class to both read and write from/to files.
@@ -48,6 +52,9 @@ int main(int argc, char *argv[])
 	}
 
 	MolDyn sim = MolDyn("config/4.3-input-" + phase + ".dat", "config/4.3-config-" + phase + ".0", old);		//Inizialization
+	if (string(argv[1]) == "start")
+		sim.info();
+
 	if (equilibrate)
 		sim.rescale();
 	
