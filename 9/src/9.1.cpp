@@ -83,6 +83,7 @@ int main()
 		cerr << "Could not open data/9.1-square-cities.dat" << endl;
 		exit(1);
 	}
+
 	// Generate cities placed inside a square
 	for (int i = 0; i < n_cities; i++) {
 		double x = rnd.rannyu();

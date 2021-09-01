@@ -8,6 +8,7 @@ struct City {
 	double x, y;
 	int label;
 
+	City() {}
 	City(double x, double y, int label): x{x}, y{y}, label{label} {}
 
 	// The L1 distance between two cities
@@ -87,7 +88,12 @@ public:
 	// Construt a population from a vector of individuals
 	Population(std::vector<Individual> individuals, Random &rnd, double pm = 0.1, double pc = 0.5, double p = 3.):
 		individuals{individuals}, n_individuals{individuals.size()}, n_cities{individuals[0].cities.size()}, rnd{rnd}, pm{pm}, pc{pc}, p{p} {
-		std::sort(individuals.begin(), individuals.end());	// The individuals in a population are always sorted from the least costly. std::sort uses Individual::operator<.
+		sort();	// The individuals in a population are always sorted from the least costly.
+	}
+
+	// Sort the population
+	void sort() {
+		std::sort(individuals.begin(), individuals.end()); //std::sort uses Individual::operator<.
 	}
 
 	// Select an individual randomly, with a greater probability of extracting a less costly one
@@ -112,8 +118,8 @@ public:
 			new_generation_vec[i] = son1;
 			new_generation_vec[i+1] = son2;
 		}
-		std::sort(new_generation_vec.begin(), new_generation_vec.end());	 // Sort the population
 		individuals = new_generation_vec;					 // Replace the old generation
+		sort();	 // Sort the population
 	}
 
 	// Mutate an individual (each mutation happens with probability pm)
