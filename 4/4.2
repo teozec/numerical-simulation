@@ -1,0 +1,40 @@
+#!/bin/sh
+
+N_EQUILIBRATIONS=3
+N_MEASURES=1
+
+# Clean data from old simulations
+rm -rf data/4.2-*
+
+# Print info about the simulation into the info file
+printf "1000\n$((1000*$N_EQUILIBRATIONS))\n$((1000*$N_MEASURES))\n100" > data/4.2-info.dat
+
+# Set starting particle configuration
+cp config/config.fcc config/4.2-config.0
+
+# First run
+printf "start "
+./4.2.bin start
+
+# Equilibration runs
+i=1
+while [ $i -le $N_EQUILIBRATIONS ]; do
+	printf "equilibrate $i "
+	cp config/4.2-config.final config/4.2-config.0
+	cp config/4.2-old.final config/4.2-old.0
+	./4.2.bin equilibrate
+	i=$(($i+1))
+done
+
+# Measure runs
+i=1
+while [ $i -le $N_MEASURES ]; do
+	printf "measure $i "
+	cp config/4.2-config.final config/4.2-config.0
+	cp config/4.2-old.final config/4.2-old.0
+	./4.2.bin measure
+	i=$(($i+1))
+done
+
+# Clean old configurations
+rm -rf config/4.2-config.0 config/4.2-old.0
