@@ -8,6 +8,9 @@ _/    _/  _/_/_/  _/_/_/_/ email: Davide.Galli@unimi.it
 *****************************************************************
 *****************************************************************/
 
+// Exercise 1.1
+// Test the RNG estimating its mean value, variance and chi squared.
+
 #include <iostream>
 #include <cmath>
 #include <fstream>

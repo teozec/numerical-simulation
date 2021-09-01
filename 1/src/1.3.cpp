@@ -8,6 +8,9 @@ _/    _/  _/_/_/  _/_/_/_/ email: Davide.Galli@unimi.it
 *****************************************************************
 *****************************************************************/
 
+// Exercise 1.3
+// Estimate pi using Buffon's method.
+
 #include <iostream>
 #include <cmath>
 #include <fstream>

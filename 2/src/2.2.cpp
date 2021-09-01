@@ -8,6 +8,9 @@ _/    _/  _/_/_/  _/_/_/_/ email: Davide.Galli@unimi.it
 *****************************************************************
 *****************************************************************/
 
+// Exercise 2.2
+// 3D discrete and continuous random walk.
+
 #include <iostream>
 #include <cmath>
 #include <fstream>
@@ -16,7 +19,7 @@ _/    _/  _/_/_/  _/_/_/_/ email: Davide.Galli@unimi.it
 
 #define N_blocks 100
 #define N_walks_per_block 1000
-#define N_steps_per_walk 10000
+#define N_steps_per_walk 100
 
 using namespace std;
 
@@ -43,18 +46,20 @@ int main()
 
 	// Discrete random walk
 	for (int i = 0; i < N_blocks; i++) {
-		double sum = 0.;
+		double r2[N_steps_per_walk] = { 0. };	// Store the mean square distance at each step
 		for (int j = 0; j < N_walks_per_block; j++) {
 			int r[3] = { 0 };
-			for (int z = 0; z < N_steps_per_walk; z++) {
-				int axis = (int) rnd.rannyu(0., 3.);	// Sample x, y or z axix
+			for (int k = 0; k < N_steps_per_walk; k++) {
+				int axis = (int) rnd.rannyu(0., 3.);	// Sample x, y or z axis
 				double dir = rnd.rannyu(-1., 1.);	// Sample positive or negative direction
-				r[axis] += dir >= 0. ? 1 : -1;		// Step
+				r[axis] += (dir >= 0. ? 1 : -1);		// Step
+				r2[k] += r[0]*r[0] + r[1]*r[1] + r[2]*r[2];
 			}
-			sum += r[0]*r[0] + r[1]*r[1] + r[2]*r[2];
 		}
-		double ave = sum / N_walks_per_block;
-		out << sqrt(ave) << endl;
+		// Write block mean square distance for each step
+		for (int j = 0; j < N_steps_per_walk; j++)
+			out << sqrt(r2[j] / N_walks_per_block) << '\t';
+		out << endl;
 	}
 	out.close();
 
@@ -67,21 +72,23 @@ int main()
 
 	// Continuous random walk
 	for (int i = 0; i < N_blocks; i++) {
-		double sum = 0.;
+		double r2[N_steps_per_walk] = { 0. };	// Store the mean square distance at each step
 		for (int j = 0; j < N_walks_per_block; j++) {
 			double r[3] = { 0 };
-			for (int z = 0; z < N_steps_per_walk; z++) {
+			for (int k = 0; k < N_steps_per_walk; k++) {
 				// Sample direction
 				double phi = rnd.rannyu(0, 2*M_PI);
 				double theta = acos(1 - 2*rnd.rannyu());
 				r[0] += sin(theta) * cos(phi);
 				r[1] += sin(theta) * sin(phi);
 				r[2] += cos(theta);
+				r2[k] += r[0]*r[0] + r[1]*r[1] + r[2]*r[2];
 			}
-			sum += r[0]*r[0] + r[1]*r[1] + r[2]*r[2];
 		}
-		double ave = sum / N_walks_per_block;
-		out << sqrt(ave) << endl;
+		// Write block mean square distance for each step
+		for (int j = 0; j < N_steps_per_walk; j++)
+			out << sqrt(r2[j] / N_walks_per_block) << '\t';
+		out << endl;
 	}
 	out.close();
 

@@ -8,6 +8,10 @@ _/    _/  _/_/_/  _/_/_/_/ email: Davide.Galli@unimi.it
 *****************************************************************
 *****************************************************************/
 
+// Exercise 2.1
+// Montecarlo intevration via uniform and importance sampling.
+// \int_0^1 f(x) dx, with f(x) = pi/2 * cos(pi/2 * x)
+
 #include <iostream>
 #include <cmath>
 #include <fstream>

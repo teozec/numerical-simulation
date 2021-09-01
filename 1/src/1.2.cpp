@@ -8,6 +8,10 @@ _/    _/  _/_/_/  _/_/_/_/ email: Davide.Galli@unimi.it
 *****************************************************************
 *****************************************************************/
 
+// Exercise 1.2
+// Test the Central Limit Theorem for uniform and exponential distributions.
+// Show that it does not apply to Cauchy distribution.
+
 #include <iostream>
 #include <cmath>
 #include <fstream>
