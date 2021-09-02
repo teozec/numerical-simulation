@@ -8,6 +8,9 @@ _/    _/  _/_/_/  _/_/_/_/ email: Davide.Galli@unimi.it
 *****************************************************************
 *****************************************************************/
 
+// Exercise 5.1
+// Sampling of quantum wavefunctions.
+
 #include <iostream>
 #include <cmath>
 #include <fstream>

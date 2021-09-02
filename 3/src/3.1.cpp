@@ -8,6 +8,9 @@ _/    _/  _/_/_/  _/_/_/_/ email: Davide.Galli@unimi.it
 *****************************************************************
 *****************************************************************/
 
+// Exercise 3.3
+// Call and put option pricing via geometric Brownian motion.
+
 #include <iostream>
 #include <cmath>
 #include <fstream>
@@ -43,6 +46,7 @@ int main()
 		return 1;
 	}
 
+	// Call - Direct GRW
 	for (int i = 0; i < N_blocks; i++) {
 		double sum = 0.;
 		for (int j = 0; j < N_throws_per_block; j++) {
@@ -62,6 +66,7 @@ int main()
 		return 1;
 	}
 
+	// Call - Discrete GRW
 	for (int i = 0; i < N_blocks; i++) {
 		double sum = 0.;
 		for (int j = 0; j < N_throws_per_block; j++) {
@@ -87,6 +92,7 @@ int main()
 		return 1;
 	}
 
+	// Put - Direct GRW
 	for (int i = 0; i < N_blocks; i++) {
 		double sum = 0.;
 		for (int j = 0; j < N_throws_per_block; j++) {
@@ -106,6 +112,7 @@ int main()
 		return 1;
 	}
 
+	// Put - Discrete GRW
 	for (int i = 0; i < N_blocks; i++) {
 		double sum = 0.;
 		for (int j = 0; j < N_throws_per_block; j++) {
