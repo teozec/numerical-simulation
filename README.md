@@ -31,3 +31,5 @@ Finally, to check the results of the simulations and perform the final data anal
 jupyter lab
 ```
 and navigate to the desired notebook situated inside the exercise directory.
+
+If needed, the C++ code is situated in the `src/` subfolder in each exercise. Sometimes, the executable is a shell scripts that calls a compiled binary, such as `4.3` which calls `4.3.bin`.
