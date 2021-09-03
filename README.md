@@ -32,4 +32,4 @@ jupyter lab
 ```
 and navigate to the desired notebook situated inside the exercise directory.
 
-If needed, the C++ code is situated in the `src/` subfolder in each exercise. Sometimes, the executable is a shell scripts that calls a compiled binary, such as `4.3` which calls `4.3.bin`.
+If needed, the C++ code is situated in the `src/` subdirectory in each exercise. Sometimes, the executable is a shell script that calls a compiled binary, such as `4.3` which calls `4.3.bin`.
