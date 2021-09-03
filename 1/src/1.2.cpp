@@ -53,7 +53,7 @@ int main()
 			// Sum N_sums[j] uniformly distributed integer numbers
 			for (int z = 0; z < N_sums[j]; z++)
 				s += (int) rnd.rannyu(1., 7.);
-			out << s/N_sums[j] << end_c[j];
+			out << (double) s / N_sums[j] << end_c[j];
 		}
 	}
 	out.close();
