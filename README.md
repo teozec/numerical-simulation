@@ -30,4 +30,4 @@ Finally, to check the results of the simulations and perform the final data anal
 ```bash
 jupyter lab
 ```
-and navigate to the desired notebook.
+and navigate to the desired notebook situated inside the exercise directory.
