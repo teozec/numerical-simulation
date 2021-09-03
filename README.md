@@ -17,7 +17,7 @@ make 1
 
 ## Executing
 
-To run exercise 1.2, make sure that the directory `1/data/` exists, then execute the following:
+To run exercise, for example, 1.2, make sure that the directory `1/data/` exists, then execute the following:
 ```bash
 cd 1/
 ./1.2
