@@ -1,8 +1,8 @@
 timeslices				30
                                                                                                                  
 brownianMotionReconstructions           0
-delta_translation			1.8
-brownianBridgeReconstructions		20
+delta_translation			2.4
+brownianBridgeReconstructions		80
 brownianBridgeAttempts			4
                                                                                                                  
 MCSTEPS					4000
