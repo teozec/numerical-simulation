@@ -1,0 +1,46 @@
+#!/bin/sh
+
+## NVT
+#for phase in solid liquid gas; do
+	#printf "* NVT $phase *\n"
+	#cp config/nvt-input.$phase config/nvt-input.dat
+	#./7.4.nvt
+	#mv data/7.4-gofr.dat data/7.4-nvt-$phase-gofr.dat
+	#mv data/7.4-measures.dat data/7.4-nvt-$phase-measures.dat
+#done
+
+# NVE
+
+N_EQUILIBRATIONS=2
+N_MEASURES=1
+for phase in solid liquid gas; do
+	printf "* NVE $phase *\n"
+
+	# Set starting particle configuration
+	cp config/config.fcc config/7.4-config-$phase.0
+
+	# First run
+	printf "start "
+	./7.4.nve start $phase
+
+	# Equilibration runs
+	i=1
+	while [ $i -le $N_EQUILIBRATIONS ]; do
+		printf "equilibrate $i "
+		cp config/7.4-config-$phase.final config/7.4-config-$phase.0
+		cp config/7.4-old-$phase.final config/7.4-old-$phase.0
+		./7.4.nve equilibrate $phase
+		i=$(($i+1))
+	done
+
+	# Measure run
+	printf "measure "
+	cp config/7.4-config-$phase.final config/7.4-config-$phase.0
+	cp config/7.4-old-$phase.final config/7.4-old-$phase.0
+	./7.4.nve measure $phase
+	i=$(($i+1))
+	printf "\n"
+
+	# Clean old configurations
+	rm -rf config/7.4-config-$phase.0 config/7.4-old-$phase.0
+done

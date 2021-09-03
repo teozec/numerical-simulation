@@ -1,0 +1,7 @@
+#!/bin/sh
+
+for phase in solid liquid gas; do
+	cp config/nvt-input.$phase config/input.dat
+	./7.1.bin
+	mv data/7.1-measures.dat data/7.1-$phase.dat
+done
