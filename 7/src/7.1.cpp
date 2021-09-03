@@ -13,7 +13,7 @@ _/    _/  _/_/_/  _/_/_/_/ email: Davide.Galli@unimi.it
 #include <cmath>	// rint, pow
 #include <string>
 #include <iomanip>
-#include "monte_carlo.h"
+#include "nvt.h"
 
 using namespace std;
 
@@ -22,7 +22,7 @@ int main()
 	const int N_steps = 500000;
 	ofstream out;
 
-	Montecarlo sim("config/input.dat", "config/config.0");
+	NVT sim("config/input.dat", "config/config.0");
 	out.open("data/7.1-measures.dat");
 	if (!out.is_open()) {
 		cerr << "Could not open data/7.1-measures.dat\n";

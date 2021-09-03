@@ -13,7 +13,7 @@ _/    _/  _/_/_/  _/_/_/_/ email: Davide.Galli@unimi.it
 #include <cmath>	// rint, pow
 #include <string>
 #include <iomanip>
-#include "mol_dyn.h"
+#include "nve.h"
 
 using namespace std;
 
@@ -22,7 +22,7 @@ int main()
 	const int N_blocks = 10, N_throws_per_block = 1000;
 	ofstream out;
 
-	MolDyn sim("config/7.3-input.dat", "config/config.fcc");
+	NVE sim("config/7.3-input.dat", "config/config.fcc");
 	out.open("data/7.3-gofr.dat");
 	if (!out.is_open()) {
 		cerr << "Could not open data/7.3-gofr.dat\n";

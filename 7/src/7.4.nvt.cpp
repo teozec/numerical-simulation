@@ -13,7 +13,7 @@ _/    _/  _/_/_/  _/_/_/_/ email: Davide.Galli@unimi.it
 #include <cmath>	// rint, pow
 #include <string>
 #include <iomanip>
-#include "monte_carlo.h"
+#include "nvt.h"
 
 using namespace std;
 
@@ -22,7 +22,7 @@ int main()
 	const int N_blocks = 100, N_throws_per_block = 500;
 	ofstream out, out_gofr;
 
-	Montecarlo sim("config/nvt-input.dat", "config/config.0");
+	NVT sim("config/nvt-input.dat", "config/config.0");
 	out.open("data/7.4-measures.dat");
 	if (!out.is_open()) {
 		cerr << "Could not open data/7.4-measures.dat\n";

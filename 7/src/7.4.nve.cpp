@@ -13,7 +13,7 @@ _/    _/  _/_/_/  _/_/_/_/ email: Davide.Galli@unimi.it
 #include <cmath>	// rint, pow
 #include <string>
 #include <iomanip>
-#include "mol_dyn.h"
+#include "nve.h"
 
 using namespace std;
 
@@ -47,7 +47,7 @@ int main(int argc, char *argv[])
 		return 1;
 	}
 
-	MolDyn sim = MolDyn("config/7.4-input-" + phase + ".dat", "config/7.4-config-" + phase + ".0", old);		//Inizialization
+	NVE sim = NVE("config/7.4-input-" + phase + ".dat", "config/7.4-config-" + phase + ".0", old);		//Inizialization
 	if (string(argv[1]) == "start")
 		sim.info();
 	if (equilibrate)

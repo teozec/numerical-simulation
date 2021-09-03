@@ -8,61 +8,58 @@ _/    _/  _/_/_/  _/_/_/_/ email: Davide.Galli@unimi.it
 *****************************************************************
 *****************************************************************/
 
-#ifndef MONTE_CARLO_H
-#define MONTE_CARLO_H
+#ifndef NVE_H_DEFINED
+#define NVE_H_DEFINED
 
 #include <string>
-//Random numbers
-#include "random.h"
 
-class Montecarlo {
-public:
-	int seed[4];
-	Random rnd;
+class NVE {
+	//parameters, observables
+	const int m_props=4;
+	int n_props;
+	int iv, ik, it, ie;
 
-//parameters, observables
-#define m_props 1000
-	int n_throws;
-	int n_props, iv, iw, igofr;
-	double vtail,ptail,bin_size;
-	int nbins;
-	double sd;
-	double walker[m_props];
+	// averages
+	double acc, att;
 
-// averages
-	double blk_av[m_props],blk_norm,accepted = 0,attempted = 0;
-	double glob_av[m_props],glob_av2[m_props];
-	double stima_pot,stima_pres,err_pot,err_press,err_gdir;
-	double energy, pressure;
+	//configuration
+	const int m_part=108;
+	double (*r)[3], (*r_old)[3];
+	double (*v)[3];
 
-//configuration
-#define m_part 108
-	double x[m_part],y[m_part],z[m_part];
-
-// thermodynamical state
+	// thermodynamical state
 	int npart;
-	double beta,temp,vol,rho,box,rcut;
+	double energy, temp, vol, rho, box, rcut;
 
-// simulation
-	int nstep, nblk;
+	// simulation
+	int iprint, seed;
 	double delta;
 
-//pigreco
-	const double pi=3.1415927;
+	//functions
+	void init_input(std::string input);
+	void init_config(std::string config, double r[][3]);
+	void init_vel();
+	double force(int, int) const;
+	double pbc(double) const;
 
-//functions
-	Montecarlo(std::string input_file, std::string config_file);
+public:
+	int nbins;
+	int n_throws;
+	double *gofr;
+	double measured_epot, measured_ekin, measured_etot, measured_temp;
+	int nstep;
+	NVE(std::string input, std::string config, std::string old = std::string());
+	~NVE();
+	void info();
+	void rescale();
 	void move(void);
 	void update_gofr();
-	void ConfFinal(void);
-	void ConfXYZ(int);
+	void conf_final(std::string config, std::string old) const;
+	void conf_xyz(int) const;
 	void measure(void);
-	void add_tails(double &energy, double &pressure);
-	double boltzmann(double, double, double, int);
-	double Pbc(double);
 };
 
-#endif
+#endif // NVE_H_DEFINED
 
 /****************************************************************
 *****************************************************************
