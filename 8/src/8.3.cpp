@@ -73,9 +73,9 @@ double psi_mu_sigma_second(double x)
 }
 
 
-void simulation(string input_filename, string output_filename, double temperature)
+void simulation(string input_filename, string output_filename, double temperature, double tau)
 {
-        readInput(input_filename, temperature);
+        readInput(input_filename, temperature, tau);
 	initialize();
 /* at this time, every variable you see, such for instance "equilibration",
 has been either acquired from "input.dat" by the readInput() function or
@@ -119,14 +119,29 @@ opportunely initialized by the initialize() function. */
 
 int main()
 {
-	variationalWaveFunction = psi_trial;
-	variationalWaveFunction_second = psi_trial_second;
-	//simulation("config/input.pigs", "data/8.3-trial", 0.);
+	// PIGS with varying tau
+	double tau[] = {8., 5., 2., 1., 0.8, 0.5, 0.2, 0.1};
+	for (int i = 0; i < 8; i++) {
+		ostringstream filename_stream_1;
+		filename_stream_1.precision(1);
+		filename_stream_1.setf(ios_base::fixed);
+		filename_stream_1 << "data/8.3-trial-pigs-" << tau[i];
+		string filename_1 = filename_stream_1.str();
+		variationalWaveFunction = psi_trial;
+		variationalWaveFunction_second = psi_trial_second;
+		simulation("config/input.pigs", filename_1, 0., tau[i]);
 
-	variationalWaveFunction = psi_mu_sigma;
-	variationalWaveFunction_second = psi_mu_sigma_second;
-	//simulation("config/input.pigs", "data/8.3-psi-pigs", 0.);
+		ostringstream filename_stream_2;
+		filename_stream_2.precision(1);
+		filename_stream_2.setf(ios_base::fixed);
+		filename_stream_2 << "data/8.3-psi-pigs-" << tau[i];
+		string filename_2 = filename_stream_2.str();
+		variationalWaveFunction = psi_mu_sigma;
+		variationalWaveFunction_second = psi_mu_sigma_second;
+		simulation("config/input.pigs", filename_2, 0., tau[i]);
+	}
 
+	// PIMC with varying temperature
 	for (int i = 0; i < 10; i++) {
 		double temperature = 1. + 0.5 * i;
 		ostringstream filename_stream;
@@ -134,7 +149,7 @@ int main()
 		filename_stream.setf(ios_base::fixed);
 		filename_stream << "data/8.3-psi-pimc-" << temperature;
 		string filename = filename_stream.str();
-		simulation("config/input.pimc", filename, temperature);
+		simulation("config/input.pimc", filename, temperature, 8.0);
 	}
 	
 	return 0;
@@ -552,7 +567,7 @@ double variationalLocalEnergy(double val)
 	return -(hbar*hbar/(2*mass))*laplacian_psi/psi;
 }
 
-void readInput(string input_filename, double temp)
+void readInput(string input_filename, double temp, double tau)
 {
 
 	ifstream input_file(input_filename);
@@ -560,7 +575,7 @@ void readInput(string input_filename, double temp)
 
 	input_file >> string_away >> timeslices;
 	temperature = temp;
-	input_file >> string_away >> imaginaryTimePropagation;
+	imaginaryTimePropagation = tau;
 	input_file >> string_away >> brownianMotionReconstructions;
 	input_file >> string_away >> delta_translation;
 	input_file >> string_away >> brownianBridgeReconstructions;
